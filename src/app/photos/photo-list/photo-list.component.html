@@ -1,20 +1,12 @@
-<div class="text-center mt-3 mb-3">
-  <form>
-    <i aria-hidden="true" class="fa fa-search mr-1"></i>
-    <input
-      class="rounded"
-      type="search"
-      placeholder="search..."
-      autofocus
-      (keyup)="onKeyUp($event.target)"
-    >
-  </form>
-</div>
+<app-search
+  (onTyping)="filter = $event" [value]="filter">
+</app-search>
 
-<app-photos [photos]="photos | filterByDescription: filter"></app-photos>
+<app-photos
+  [photos]="photos | filterByDescription: filter">
+</app-photos>
 
 <app-load-button
   (click)="load()"
   [hasMore]="hasMore">
-
 </app-load-button>
