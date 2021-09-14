@@ -4,7 +4,7 @@ import {Subject} from 'rxjs';
 
 
 import {Photo} from '../photo/photo';
-import {debounceTime} from 'rxjs/operators';
+import {debounce, debounceTime} from 'rxjs/operators';
 
 @Component({
   selector: 'app-photo-list',
@@ -31,12 +31,13 @@ export class PhotoListComponent implements OnInit, OnDestroy {
   onKeyUp(target : any) {
     if(target instanceof EventTarget) {
       let element = target as HTMLInputElement;
-      this.filter = element.value;
+      this.debounce.next(element.value)
     }
   }
 
   ngOnDestroy(): void {
     this.debounce.unsubscribe();
   }
+
 
 }
