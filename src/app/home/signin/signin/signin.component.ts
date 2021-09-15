@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
@@ -16,7 +16,8 @@ export class SigninComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private render: Renderer2
   ) {}
 
   ngOnInit(): void {
@@ -37,7 +38,9 @@ export class SigninComponent implements OnInit {
       }}, err => {
           console.log(err);
           this.loginForm.reset();
+          this.render.selectRootElement('#userNameInput').focus()
         }
       )
   }
+
 }
