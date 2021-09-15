@@ -1,8 +1,8 @@
-import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
-import {AuthService} from '../../../core/auth.service';
+import {AuthService} from '../../../core/auth/auth.service';
 
 @Component({
   // selector: 'app-signin',
@@ -12,12 +12,12 @@ import {AuthService} from '../../../core/auth.service';
 export class SigninComponent implements OnInit {
 
   loginForm!: FormGroup;
+  @ViewChild('userName') userName: ElementRef<HTMLInputElement> | undefined;
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private render: Renderer2
   ) {}
 
   ngOnInit(): void {
@@ -38,7 +38,7 @@ export class SigninComponent implements OnInit {
       }}, err => {
           console.log(err);
           this.loginForm.reset();
-          this.render.selectRootElement('#userNameInput').focus()
+          this.userName?.nativeElement.focus()
         }
       )
   }
