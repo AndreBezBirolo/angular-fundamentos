@@ -33,4 +33,10 @@ export class UserService {
     }
   }
 
+  logout() {
+    this.tokenService.removeToken();
+    // @ts-ignore
+    this.userSubject.next(null)
+  }
+
 }
