@@ -6,7 +6,7 @@
   class="form mt-4">
 
   <div class="form-group">
-    <input #userName id="userNameInput"
+    <input #userNameInput id="userNameInput"
       formControlName="userName"
       class="form-control"
       placeholder="user name"
@@ -38,4 +38,4 @@
 
 </form>
 
-<p>Not a user?<a>Register now</a></p>
+<p>Not a user?<a [routerLink]="['signup']">Register now</a></p>
