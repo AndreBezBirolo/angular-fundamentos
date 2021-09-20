@@ -33,7 +33,10 @@ export class PhotoService {
     formData.append('allowComments', String(allowComments));
     formData.append('imageFile', file);
     return this.http
-      .post(API + '/photos/upload', formData);
+      .post(API + '/photos/upload', formData, {
+        observe: 'events',
+        reportProgress: true
+      });
   }
 
   findById(photoId: number) {

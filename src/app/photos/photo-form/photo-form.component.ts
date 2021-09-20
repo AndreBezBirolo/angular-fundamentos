@@ -1,9 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {PhotoService} from '../photo/photo.service';
 import {Router} from '@angular/router';
+import {HttpEvent, HttpEventType} from '@angular/common/http';
+import {finalize} from 'rxjs/operators';
+
+import {PhotoService} from '../photo/photo.service';
 import {AlertService} from '../../shared/components/alert/alert.service';
 import {UserService} from '../../core/user/user.service';
+
 
 @Component({
   selector: 'app-photo-form',
@@ -15,6 +19,7 @@ export class PhotoFormComponent implements OnInit {
   photoForm!: FormGroup;
   file!: File;
   preview!: string;
+  percentDone: number = 0;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -50,11 +55,20 @@ export class PhotoFormComponent implements OnInit {
     const {description, allowComments} = this.photoForm.getRawValue()
     this.photoService
       .upload(description, allowComments, this.file)
-      .subscribe(() => {
-          this.alertService.success('Upload complete!', true);
-          this.router.navigate(['/user', this.userService.getUserName()]);
+      .pipe(finalize(() => {
+        this.router.navigate(['/user', this.userService.getUserName()]);
+      }))
+      .subscribe((event: HttpEvent<any>) => {
+          if (event.type == HttpEventType.UploadProgress) {
+            // @ts-ignore
+            this.percentDone = Math.round(100 * event.loaded / event.total)
+          } else if (event.type == HttpEventType.Response) {
+            this.alertService.success('Upload complete!', true);
+          }
         },
-        error => this.alertService.warning('Error in upload!'))
+        error => {
+          this.alertService.warning('Error in upload!')
+        });
   }
 
 }
