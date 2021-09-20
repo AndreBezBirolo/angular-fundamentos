@@ -5,6 +5,7 @@ import {Photo} from '../photo/photo';
 import {Observable} from 'rxjs';
 import {PhotoComment} from '../photo/photo-comment';
 import {AlertService} from '../../shared/components/alert/alert.service';
+import {UserService} from '../../core/user/user.service';
 
 @Component({
   // selector: 'app-photo-details',
@@ -20,7 +21,8 @@ export class PhotoDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private photoService: PhotoService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private userService: UserService
   ) {
   }
 
@@ -33,10 +35,10 @@ export class PhotoDetailsComponent implements OnInit {
   remove() {
     this.photoService.removePhoto(this.photoId)
       .subscribe(() => {
-        this.alertService.success('Photo removed!');
-        this.router.navigate(['']);
+        this.alertService.success('Photo removed!', true);
+        this.router.navigate(['/user', this.userService.getUserName() ]);
       },
-      error => this.alertService.warning('Could not delete the photo!'))
+      error => this.alertService.warning('Could not delete the photo!', true))
   }
 
 }
