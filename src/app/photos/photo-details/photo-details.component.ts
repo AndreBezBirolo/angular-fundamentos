@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {PhotoService} from '../photo/photo.service';
 import {Photo} from '../photo/photo';
@@ -30,16 +30,30 @@ export class PhotoDetailsComponent implements OnInit {
     this.photoId = this.route.snapshot.params.photoId
     this.photo$ = this.photoService
       .findById(this.photoId);
-    this.photo$.subscribe(() => {}, err => this.router.navigate(['not-found']))
+    this.photo$.subscribe(() => {
+    }, err => this.router.navigate(['not-found']))
   }
 
   remove() {
     this.photoService.removePhoto(this.photoId)
       .subscribe(() => {
-        this.alertService.success('Photo removed!', true);
-        this.router.navigate(['/user', this.userService.getUserName() ]);
-      },
-      error => this.alertService.warning('Could not delete the photo!', true))
+          this.alertService.success('Photo removed!', true);
+          this.router.navigate(['/user', this.userService.getUserName()]);
+        },
+        error => this.alertService.warning('Could not delete the photo!', true))
+  }
+
+  like(photo: Photo) {
+    this.photoService
+      .like(photo.id)
+      .subscribe(liked => {
+        if (liked) {
+          this.photo$ = this.photoService.findById(photo.id)
+          this.alertService.success('Success Liked')
+        } else {
+          this.alertService.warning('Like Failed')
+        }
+      })
   }
 
 }

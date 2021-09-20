@@ -14,11 +14,17 @@ const routes: Routes = [
       {
         path: '',
         component: SigninComponent,
-        canActivate: [LoginGuard]
+        canActivate: [LoginGuard],
+        data: {
+          title: 'Alurapic - Sign in'
+        }
       },
       {
         path: 'signup',
         component: SignupComponent,
+        data: {
+          title: 'Alurapic - Sign up'
+        }
       },
     ]
   },

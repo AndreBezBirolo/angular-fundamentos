@@ -19,7 +19,7 @@ export class SigninComponent implements OnInit, AfterViewInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private plataformDetectorService: PlatformDetectorService
+    private plataformDetectorService: PlatformDetectorService,
   ) {}
 
   ngOnInit(): void {
