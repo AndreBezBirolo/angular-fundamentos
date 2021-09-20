@@ -5,3 +5,6 @@ body {
 .break-word {
   word-break: break-all;
 }
+app-photo-list app-photo .img-thumbnail {
+  width: 100%;
+}
