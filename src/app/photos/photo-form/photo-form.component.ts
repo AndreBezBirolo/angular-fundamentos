@@ -67,7 +67,7 @@ export class PhotoFormComponent implements OnInit {
           }
         },
         error => {
-          this.alertService.warning('Error in upload!')
+          this.alertService.warning('Error in upload!', true)
         });
   }
 
