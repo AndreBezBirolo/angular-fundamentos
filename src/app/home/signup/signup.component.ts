@@ -1,10 +1,11 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
 import {lowerCaseValidator} from '../../shared/validators/lower-case.validator';
+import {userNamePassword} from './username-password.validator';
 import {UserNotTakenValidatorService} from './user-not-taken.validator.service';
 import {NewUser} from './new-user';
 import {SignupService} from './signup.service';
-import {Router} from '@angular/router';
 import {PlatformDetectorService} from '../../core/platform-detector/platform-detector.service';
 
 @Component({
@@ -57,17 +58,22 @@ export class SignupComponent implements OnInit, AfterViewInit {
           Validators.maxLength(14)
         ]
       ],
+    }, {
+      validator: userNamePassword
     });
   }
 
   signup() {
-    const newUser = this.signupForm.getRawValue() as NewUser;
-    this.signupService
-      .signup(newUser)
-      .subscribe(
-        () => this.router.navigate(['']),
-        err => console.log(err)
-      );
+    if(this.signupForm.valid && !this.signupForm.pending) {
+      const newUser = this.signupForm.getRawValue() as NewUser;
+      this.signupService
+        .signup(newUser)
+        .subscribe(
+          () => this.router.navigate(['']),
+          err => console.log(err)
+        );
+    }
+
   }
 
   ngAfterViewInit(): void {
